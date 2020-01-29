@@ -30,6 +30,12 @@ func (enc Enc) PutInt32(x uint32) {
 	*enc.off += 4
 }
 
+func (enc Enc) PutInts(xs []uint64) {
+	for _, x := range xs {
+		enc.PutInt(x)
+	}
+}
+
 func (enc Enc) Finish() disk.Block {
 	return enc.b
 }
@@ -55,4 +61,12 @@ func (dec Dec) GetInt32() uint32 {
 	off := *dec.off
 	*dec.off += 4
 	return machine.UInt32Get(dec.b[off:])
+}
+
+func (dec Dec) GetInts(num uint64) []uint64 {
+	xs := make([]uint64, num)
+	for i := uint64(0); i < num; i++ {
+		xs[i] = dec.GetInt()
+	}
+	return xs
 }

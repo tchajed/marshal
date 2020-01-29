@@ -89,3 +89,14 @@ func TestFillBlock(t *testing.T) {
 		assert.Equal(n, dec.GetInt(), "encode-decode index %d", i)
 	}
 }
+
+func TestInts(t *testing.T) {
+	assert := assert.New(t)
+	numbers := []uint64{2, 4, 10, 23}
+	enc := NewEnc()
+	enc.PutInts(numbers)
+	b := enc.Finish()
+
+	dec := NewDec(b)
+	assert.Equal(numbers, dec.GetInts(uint64(len(numbers))))
+}
