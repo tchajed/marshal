@@ -64,9 +64,9 @@ func (dec Dec) GetInt32() uint32 {
 }
 
 func (dec Dec) GetInts(num uint64) []uint64 {
-	xs := make([]uint64, num)
+	var xs []uint64
 	for i := uint64(0); i < num; i++ {
-		xs[i] = dec.GetInt()
+		xs = append(xs, dec.GetInt())
 	}
 	return xs
 }
