@@ -4,13 +4,12 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/tchajed/goose/machine/disk"
 )
 
 func TestUInt64(t *testing.T) {
 	assert := assert.New(t)
 	numbers := []uint64{0, 123, 1 << 58, 1 << 48}
-	enc := NewEnc()
+	enc := NewEnc(4096)
 	for _, n := range numbers {
 		enc.PutInt(n)
 	}
@@ -25,7 +24,7 @@ func TestUInt64(t *testing.T) {
 func TestUInt32(t *testing.T) {
 	assert := assert.New(t)
 	numbers := []uint32{0, 123, 1<<0 | 1<<15 | 1<<31, 1 << 22, 1<<32 - 1}
-	enc := NewEnc()
+	enc := NewEnc(4096)
 	for _, n := range numbers {
 		enc.PutInt32(n)
 	}
@@ -44,8 +43,8 @@ type data struct {
 	d uint32
 }
 
-func (s data) encode() disk.Block {
-	enc := NewEnc()
+func (s data) encode() []byte {
+	enc := NewEnc(8 + 4 + 8 + 4)
 	enc.PutInt(s.a)
 	enc.PutInt32(s.b)
 	enc.PutInt(s.c)
@@ -53,7 +52,7 @@ func (s data) encode() disk.Block {
 	return enc.Finish()
 }
 
-func decodeData(b disk.Block) data {
+func decodeData(b []byte) data {
 	dec := NewDec(b)
 	// note that this works correctly, but there's a subtle difference between
 	// Go's program order initialization and Goose's declaration order (in this
@@ -78,7 +77,7 @@ func TestFillBlock(t *testing.T) {
 	for i := 0; i < 4096/8; i++ {
 		numbers = append(numbers, 1)
 	}
-	enc := NewEnc()
+	enc := NewEnc(4096)
 	for _, n := range numbers {
 		enc.PutInt(n)
 	}
@@ -93,7 +92,7 @@ func TestFillBlock(t *testing.T) {
 func TestInts(t *testing.T) {
 	assert := assert.New(t)
 	numbers := []uint64{2, 4, 10, 23}
-	enc := NewEnc()
+	enc := NewEnc(4096)
 	enc.PutInts(numbers)
 	b := enc.Finish()
 
