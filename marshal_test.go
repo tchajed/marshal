@@ -99,3 +99,16 @@ func TestInts(t *testing.T) {
 	dec := NewDec(b)
 	assert.Equal(numbers, dec.GetInts(uint64(len(numbers))))
 }
+
+func TestBytes(t *testing.T) {
+	assert := assert.New(t)
+	enc := NewEnc(3 + 8 + 8)
+	enc.PutInt(7)
+	enc.PutBytes([]byte{1, 2, 3})
+	enc.PutInt(8)
+
+	dec := NewDec(enc.Finish())
+	assert.Equal(uint64(7), dec.GetInt())
+	assert.Equal([]byte{1, 2, 3}, dec.GetBytes(3))
+	assert.Equal(uint64(8), dec.GetInt())
+}

@@ -35,6 +35,12 @@ func (enc Enc) PutInts(xs []uint64) {
 	}
 }
 
+func (enc Enc) PutBytes(b []byte) {
+	off := *enc.off
+	n := uint64(copy(enc.b[off:], b))
+	*enc.off += n // should be len(b) (unless too much data was provided)
+}
+
 func (enc Enc) Finish() []byte {
 	return enc.b
 }
@@ -68,4 +74,11 @@ func (dec Dec) GetInts(num uint64) []uint64 {
 		xs = append(xs, dec.GetInt())
 	}
 	return xs
+}
+
+func (dec Dec) GetBytes(num uint64) []byte {
+	off := *dec.off
+	b := dec.b[off : off+num]
+	*dec.off += num
+	return b
 }
