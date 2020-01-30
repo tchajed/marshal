@@ -2,18 +2,17 @@ package marshal
 
 import (
 	"github.com/tchajed/goose/machine"
-	"github.com/tchajed/goose/machine/disk"
 )
 
-// Enc is a stateful encoder for a single disk block.
+// Enc is a stateful encoder for a statically-allocated array.
 type Enc struct {
-	b   disk.Block
+	b   []byte
 	off *uint64
 }
 
-func NewEnc() Enc {
+func NewEnc(sz uint64) Enc {
 	return Enc{
-		b:   make(disk.Block, disk.BlockSize),
+		b:   make([]byte, sz),
 		off: new(uint64),
 	}
 }
@@ -36,18 +35,18 @@ func (enc Enc) PutInts(xs []uint64) {
 	}
 }
 
-func (enc Enc) Finish() disk.Block {
+func (enc Enc) Finish() []byte {
 	return enc.b
 }
 
 // Dec is a stateful decoder that returns values encoded
-// sequentially in a single disk block.
+// sequentially in a single slice.
 type Dec struct {
-	b   disk.Block
+	b   []byte
 	off *uint64
 }
 
-func NewDec(b disk.Block) Dec {
+func NewDec(b []byte) Dec {
 	return Dec{b: b, off: new(uint64)}
 }
 
