@@ -112,3 +112,15 @@ func TestBytes(t *testing.T) {
 	assert.Equal([]byte{1, 2, 3}, dec.GetBytes(3))
 	assert.Equal(uint64(8), dec.GetInt())
 }
+
+func TestBool(t *testing.T) {
+	assert := assert.New(t)
+	enc := NewEnc(4096)
+	enc.PutBool(true)
+	enc.PutBool(false)
+	b := enc.Finish()
+
+	dec := NewDec(b)
+	assert.Equal(true, dec.GetBool())
+	assert.Equal(false, dec.GetBool())
+}

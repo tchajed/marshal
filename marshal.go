@@ -41,6 +41,16 @@ func (enc Enc) PutBytes(b []byte) {
 	*enc.off += n // should be len(b) (unless too much data was provided)
 }
 
+func (enc Enc) PutBool(b bool) {
+	off := *enc.off
+	if !b {
+		enc.b[off] = 0
+	} else {
+		enc.b[off] = 1
+	}
+	*enc.off += 1
+}
+
 func (enc Enc) Finish() []byte {
 	return enc.b
 }
@@ -81,4 +91,14 @@ func (dec Dec) GetBytes(num uint64) []byte {
 	b := dec.b[off : off+num]
 	*dec.off += num
 	return b
+}
+
+func (dec Dec) GetBool() bool {
+	off := *dec.off
+	*dec.off += 1
+	if dec.b[off] == 0 {
+		return false
+	} else {
+		return true
+	}
 }
