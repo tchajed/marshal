@@ -41,13 +41,17 @@ func (enc Enc) PutBytes(b []byte) {
 	*enc.off += n // should be len(b) (unless too much data was provided)
 }
 
+func bool2byte(b bool) byte {
+	if b {
+		return 1
+	} else {
+		return 0
+	}
+}
+
 func (enc Enc) PutBool(b bool) {
 	off := *enc.off
-	if !b {
-		enc.b[off] = 0
-	} else {
-		enc.b[off] = 1
-	}
+	enc.b[off] = bool2byte(b)
 	*enc.off += 1
 }
 
