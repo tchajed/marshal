@@ -1,6 +1,6 @@
 # Go encoding library
 
-[![CI](https://github.com/tchajed/marshal/workflows/CI/badge.svg)](https://github.com/tchajed/marshal/actions?query=workflow%3ACI)
+[![CI](https://github.com/tchajed/marshal/actions/workflows/build.yml/badge.svg)](https://github.com/tchajed/marshal/actions/workflows/build.yml)
 
 Written in [Goose](https://github.com/tchajed/goose) for verification in Iris.
 
