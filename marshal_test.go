@@ -124,3 +124,18 @@ func TestBool(t *testing.T) {
 	assert.Equal(true, dec.GetBool())
 	assert.Equal(false, dec.GetBool())
 }
+
+func TestGetRemainingBytes(t *testing.T) {
+	assert := assert.New(t)
+	enc := NewEnc(8 + 8 + 8)
+	enc.PutInts([]uint64{1, 2, 3})
+	b := enc.Finish()
+
+	dec := NewDec(b)
+	dec.GetInt()
+	remaining := dec.GetRemainingBytes()
+	assert.Len(remaining, 8+8, "should have 8+8 remaining bytes")
+	dec = NewDec(remaining)
+	assert.Equal(uint64(2), dec.GetInt())
+	assert.Equal(uint64(3), dec.GetInt())
+}
