@@ -102,11 +102,6 @@ func (dec Dec) GetBytes(num uint64) []byte {
 	return b
 }
 
-func (dec Dec) GetRemainingBytes() []byte {
-	remaining := uint64(len(dec.b)) - *dec.off
-	return dec.GetBytes(remaining)
-}
-
 func (dec Dec) GetBool() bool {
 	off := *dec.off
 	*dec.off += 1
