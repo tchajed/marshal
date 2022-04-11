@@ -24,7 +24,9 @@ func reserve(b []byte, additional uint64) []byte {
 		new_cap := compute_new_cap(uint64(cap(b)), min_cap)
 		// We make a new slice with length 0 and the desired capacity.
 		// Then we append `b` to that, which copies its elements without further allocation.
-		return append(make([]byte, 0, new_cap), b...)
+		dest := make([]byte, len(b), new_cap)
+		copy(dest, b)
+		return dest
 	} else {
 		return b
 	}
