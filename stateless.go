@@ -46,3 +46,12 @@ func WriteInt(b []byte, i uint64) []byte {
 	machine.UInt64Put(b3[off:], i)
 	return b3
 }
+
+func WriteBytes(b []byte, data []byte) []byte {
+	// This is the same as append(b, data...), but that is not supported in Goose.
+	b2 := reserve(b, uint64(len(data)))
+	off := len(b2)
+	b3 := b2[:off+len(data)]
+	copy(b3[off:], data)
+	return b3
+}
