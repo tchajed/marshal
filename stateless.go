@@ -17,6 +17,9 @@ func compute_new_cap(old_cap uint64, min_cap uint64) uint64 {
 // Grow a slice to have at least `additional` unused bytes in the capacity.
 // Runtime-check against overflow.
 func reserve(b []byte, additional uint64) []byte {
+	// This is less of a regular "assume" and more of a "we are okay with tearing down the entire
+	// application (in a controlled way)" if it does not hold. We rely on SumAssumeNoOverflow
+	// doing a regular Go panic at runtime if the condition fails.
 	min_cap := std.SumAssumeNoOverflow(uint64(len(b)), additional)
 	if uint64(cap(b)) < min_cap {
 		// Amortized allocation strategy: grow slice by at least a certain factor.
