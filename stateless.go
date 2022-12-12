@@ -41,6 +41,18 @@ func ReadInt(b []byte) (uint64, []byte) {
 	return i, b[8:]
 }
 
+func ReadBytes(b []byte, l uint64) ([]byte, []byte) {
+	s := b[:l]
+	return s, b[l:]
+}
+
+// Like ReadBytes, but avoids keeping the source slice [b] alive.
+func ReadBytesCopy(b []byte, l uint64) ([]byte, []byte) {
+	s := make([]byte, l)
+	copy(s, b[:l])
+	return s, b[l:]
+}
+
 // Functions for the stateless encoder API
 func WriteInt(b []byte, i uint64) []byte {
 	b2 := reserve(b, 8) // If go would let me shadow variables, this code would be much more readable
