@@ -21,6 +21,25 @@ func TestStatelessInt(t *testing.T) {
 	}
 }
 
+func TestStatelessWriteBytesInPlace(t *testing.T) {
+	assert := assert.New(t)
+	data := []byte{1, 2, 3, 4}
+	b := make([]byte, 2, 2+4)
+	// WriteBytes has enough capacity
+	b = WriteBytes(b, data)
+	assert.Equal([]byte{0, 0, 1, 2, 3, 4}, b)
+}
+
+func TestStatelessWriteBytesCopy(t *testing.T) {
+	assert := assert.New(t)
+	data := []byte{1, 2, 3, 4}
+	b := make([]byte, 2, 3)
+	b[0] = 10
+	// not enough capacity, WriteBytes needs to copy the slice to make room
+	b = WriteBytes(b, data)
+	assert.Equal([]byte{10, 0, 1, 2, 3, 4}, b)
+}
+
 func TestStatelessBool(t *testing.T) {
 	assert := assert.New(t)
 	bools := []bool{true, false, true, false}
