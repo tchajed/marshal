@@ -79,13 +79,7 @@ func WriteInt(b []byte, i uint64) []byte {
 
 // Append data to b, returning the new slice.
 func WriteBytes(b []byte, data []byte) []byte {
-	// This is the same as append(b, data...), but that is not supported in Goose.
-	// TODO: add support natively rather than doing this manually
-	b2 := reserve(b, uint64(len(data)))
-	off := len(b2)
-	b3 := b2[:off+len(data)]
-	copy(b3[off:], data)
-	return b3
+	return append(b, data...)
 }
 
 func WriteBool(b []byte, x bool) []byte {
