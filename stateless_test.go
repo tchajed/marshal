@@ -20,3 +20,18 @@ func TestStatelessInt(t *testing.T) {
 		assert.Equal(n, n2, "encode-decode index %d", i)
 	}
 }
+
+func TestStatelessBool(t *testing.T) {
+	assert := assert.New(t)
+	bools := []bool{true, false, true, false}
+	var data []byte
+	for _, b := range bools {
+		data = WriteBool(data, b)
+	}
+
+	for i, b := range bools {
+		b2, data2 := ReadBool(data)
+		data = data2
+		assert.Equal(b, b2, "encode-decode index %d", i)
+	}
+}

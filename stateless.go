@@ -81,3 +81,11 @@ func WriteBytes(b []byte, data []byte) []byte {
 	copy(b3[off:], data)
 	return b3
 }
+
+func WriteBool(b []byte, x bool) []byte {
+	if x {
+		return append(b, 1)
+	} else {
+		return append(b, 0)
+	}
+}
