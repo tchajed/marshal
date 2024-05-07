@@ -60,6 +60,12 @@ func ReadBool(b []byte) (bool, []byte) {
 	return x, b[1:]
 }
 
+func ReadLenPrefixedBytes(b []byte) ([]byte, []byte) {
+	l, b2 := ReadInt(b)
+	bs, b3 := ReadBytes(b2, l)
+	return bs, b3
+}
+
 /* Functions for the stateless encoder API */
 
 // Encode i in little endian format and append it to b, returning the new slice.
@@ -88,4 +94,9 @@ func WriteBool(b []byte, x bool) []byte {
 	} else {
 		return append(b, 0)
 	}
+}
+
+func WriteLenPrefixedBytes(b []byte, bs []byte) []byte {
+	b2 := WriteInt(b, uint64(len(bs)))
+	return WriteBytes(b2, bs)
 }
