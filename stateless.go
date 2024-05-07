@@ -35,12 +35,14 @@ func reserve(b []byte, additional uint64) []byte {
 	}
 }
 
-// Functions for the stateless decoder API
+/* Functions for the stateless decoder API */
+
 func ReadInt(b []byte) (uint64, []byte) {
 	i := machine.UInt64Get(b)
 	return i, b[8:]
 }
 
+// ReadBytes reads `l` bytes from b and returns (bs, rest)
 func ReadBytes(b []byte, l uint64) ([]byte, []byte) {
 	s := b[:l]
 	return s, b[l:]
@@ -53,7 +55,14 @@ func ReadBytesCopy(b []byte, l uint64) ([]byte, []byte) {
 	return s, b[l:]
 }
 
-// Functions for the stateless encoder API
+func ReadBool(b []byte) (bool, []byte) {
+	x := b[0] != 0
+	return x, b[1:]
+}
+
+/* Functions for the stateless encoder API */
+
+// Encode i in little endian format and append it to b, returning the new slice.
 func WriteInt(b []byte, i uint64) []byte {
 	b2 := reserve(b, 8) // If go would let me shadow variables, this code would be much more readable
 	off := len(b2)
@@ -62,8 +71,10 @@ func WriteInt(b []byte, i uint64) []byte {
 	return b3
 }
 
+// Append data to b, returning the new slice.
 func WriteBytes(b []byte, data []byte) []byte {
 	// This is the same as append(b, data...), but that is not supported in Goose.
+	// TODO: add support natively rather than doing this manually
 	b2 := reserve(b, uint64(len(data)))
 	off := len(b2)
 	b3 := b2[:off+len(data)]

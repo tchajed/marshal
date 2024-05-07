@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestInt(t *testing.T) {
+func TestStatelessInt(t *testing.T) {
 	assert := assert.New(t)
 	numbers := []uint64{0, 123, 1 << 58, 1 << 48}
 	var data []byte
