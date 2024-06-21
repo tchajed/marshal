@@ -42,6 +42,11 @@ func ReadInt(b []byte) (uint64, []byte) {
 	return i, b[8:]
 }
 
+func ReadInt32(b []byte) (uint32, []byte) {
+	i := machine.UInt32Get(b)
+	return i, b[4:]
+}
+
 // ReadBytes reads `l` bytes from b and returns (bs, rest)
 func ReadBytes(b []byte, l uint64) ([]byte, []byte) {
 	s := b[:l]
@@ -68,12 +73,22 @@ func ReadLenPrefixedBytes(b []byte) ([]byte, []byte) {
 
 /* Functions for the stateless encoder API */
 
-// Encode i in little endian format and append it to b, returning the new slice.
+// WriteInt appends i in little-endian format to b, returning the new slice.
 func WriteInt(b []byte, i uint64) []byte {
-	b2 := reserve(b, 8) // If go would let me shadow variables, this code would be much more readable
+	b2 := reserve(b, 8)
 	off := len(b2)
-	b3 := b2[:off+8] // yeah you can index into a slice to *increase* its length (up to its capacity)
+	// increase b2's length to include its reserved capacity
+	b3 := b2[:off+8]
 	machine.UInt64Put(b3[off:], i)
+	return b3
+}
+
+// WriteInt32 appends 32-bit integer i in little-endian format to b, returning the new slice.
+func WriteInt32(b []byte, i uint32) []byte {
+	b2 := reserve(b, 4)
+	off := len(b2)
+	b3 := b2[:off+4]
+	machine.UInt32Put(b3[off:], i)
 	return b3
 }
 

@@ -21,6 +21,21 @@ func TestStatelessInt(t *testing.T) {
 	}
 }
 
+func TestStatelessInt32(t *testing.T) {
+	assert := assert.New(t)
+	numbers := []uint32{0, 123, 1 << 22}
+	var data []byte
+	for _, n := range numbers {
+		data = WriteInt32(data, n)
+	}
+
+	for i, n := range numbers {
+		n2, data2 := ReadInt32(data)
+		data = data2
+		assert.Equal(n, n2, "encode-decode index %d", i)
+	}
+}
+
 func TestStatelessWriteBytesInPlace(t *testing.T) {
 	assert := assert.New(t)
 	data := []byte{1, 2, 3, 4}
