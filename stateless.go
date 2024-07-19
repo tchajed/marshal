@@ -2,7 +2,7 @@ package marshal
 
 import (
 	"github.com/goose-lang/std"
-	"github.com/tchajed/goose/machine"
+	"github.com/goose-lang/goose/machine"
 )
 
 func compute_new_cap(old_cap uint64, min_cap uint64) uint64 {

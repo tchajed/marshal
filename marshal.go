@@ -1,7 +1,7 @@
 package marshal
 
 import (
-	"github.com/tchajed/goose/machine"
+	"github.com/goose-lang/goose/machine"
 )
 
 // Enc is a stateful encoder for a statically-allocated array.
