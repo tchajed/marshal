@@ -3,8 +3,8 @@ module github.com/tchajed/marshal
 go 1.21
 
 require (
-	github.com/goose-lang/goose v0.6.1
-	github.com/goose-lang/std v0.3.2
+	github.com/goose-lang/goose v0.6.2
+	github.com/goose-lang/std v0.3.3
 	github.com/stretchr/testify v1.9.0
 )
 
