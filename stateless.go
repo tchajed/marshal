@@ -1,7 +1,7 @@
 package marshal
 
 import (
-	"github.com/goose-lang/goose/machine"
+	"github.com/goose-lang/primitive"
 	"github.com/goose-lang/std"
 )
 
@@ -38,12 +38,12 @@ func reserve(b []byte, additional uint64) []byte {
 /* Functions for the stateless decoder API */
 
 func ReadInt(b []byte) (uint64, []byte) {
-	i := machine.UInt64Get(b)
+	i := primitive.UInt64Get(b)
 	return i, b[8:]
 }
 
 func ReadInt32(b []byte) (uint32, []byte) {
-	i := machine.UInt32Get(b)
+	i := primitive.UInt32Get(b)
 	return i, b[4:]
 }
 
@@ -79,7 +79,7 @@ func WriteInt(b []byte, i uint64) []byte {
 	off := len(b2)
 	// increase b2's length to include its reserved capacity
 	b3 := b2[:off+8]
-	machine.UInt64Put(b3[off:], i)
+	primitive.UInt64Put(b3[off:], i)
 	return b3
 }
 
@@ -88,7 +88,7 @@ func WriteInt32(b []byte, i uint32) []byte {
 	b2 := reserve(b, 4)
 	off := len(b2)
 	b3 := b2[:off+4]
-	machine.UInt32Put(b3[off:], i)
+	primitive.UInt32Put(b3[off:], i)
 	return b3
 }
 

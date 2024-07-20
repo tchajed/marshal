@@ -1,7 +1,7 @@
 package marshal
 
 import (
-	"github.com/goose-lang/goose/machine"
+	"github.com/goose-lang/primitive"
 )
 
 // Enc is a stateful encoder for a statically-allocated array.
@@ -24,13 +24,13 @@ func NewEnc(sz uint64) Enc {
 
 func (enc Enc) PutInt(x uint64) {
 	off := *enc.off
-	machine.UInt64Put(enc.b[off:], x)
+	primitive.UInt64Put(enc.b[off:], x)
 	*enc.off += 8
 }
 
 func (enc Enc) PutInt32(x uint32) {
 	off := *enc.off
-	machine.UInt32Put(enc.b[off:], x)
+	primitive.UInt32Put(enc.b[off:], x)
 	*enc.off += 4
 }
 
@@ -78,13 +78,13 @@ func NewDec(b []byte) Dec {
 func (dec Dec) GetInt() uint64 {
 	off := *dec.off
 	*dec.off += 8
-	return machine.UInt64Get(dec.b[off:])
+	return primitive.UInt64Get(dec.b[off:])
 }
 
 func (dec Dec) GetInt32() uint32 {
 	off := *dec.off
 	*dec.off += 4
-	return machine.UInt32Get(dec.b[off:])
+	return primitive.UInt32Get(dec.b[off:])
 }
 
 func (dec Dec) GetInts(num uint64) []uint64 {

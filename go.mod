@@ -1,10 +1,10 @@
 module github.com/tchajed/marshal
 
-go 1.21
+go 1.22
 
 require (
-	github.com/goose-lang/goose v0.6.2
-	github.com/goose-lang/std v0.3.3
+	github.com/goose-lang/primitive v0.1.0
+	github.com/goose-lang/std v0.4.1
 	github.com/stretchr/testify v1.9.0
 )
 
