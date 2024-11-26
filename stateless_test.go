@@ -69,3 +69,39 @@ func TestStatelessBool(t *testing.T) {
 		assert.Equal(b, b2, "encode-decode index %d", i)
 	}
 }
+
+type things struct {
+	x  uint64
+	y  uint64
+	ok bool
+}
+
+func readThings(b []byte) (x things, b2 []byte) {
+	b2 = b
+	x.x, b2 = ReadInt(b2)
+	x.y, b2 = ReadInt(b2)
+	x.ok, b2 = ReadBool(b2)
+	return
+}
+
+func writeThings(x things, b []byte) []byte {
+	b2 := b
+	b2 = WriteInt(b2, x.x)
+	b2 = WriteInt(b2, x.y)
+	b2 = WriteBool(b2, x.ok)
+	return b2
+}
+
+func TestStatelessWriteSlice(t *testing.T) {
+	assert := assert.New(t)
+	xs := []things{
+		{2, 1, true},
+		{3, 1, false},
+		{0, 7, true},
+	}
+	b := WriteSliceLenPrefix([]byte{}, xs, writeThings)
+
+	xs2, b_extra := ReadSliceLenPrefix(b, readThings)
+	assert.Empty(b_extra)
+	assert.Equal(xs, xs2)
+}
