@@ -105,3 +105,13 @@ func TestStatelessWriteSlice(t *testing.T) {
 	assert.Empty(b_extra)
 	assert.Equal(xs, xs2)
 }
+
+func TestStatelessIntSlice(t *testing.T) {
+	assert := assert.New(t)
+	numbers := []uint64{0, 123, 1 << 58, 1 << 48}
+	data := WriteSlice([]byte{}, numbers, WriteInt)
+	result, b_extra := ReadSlice(data, 4, ReadInt)
+
+	assert.Empty(b_extra)
+	assert.Equal(numbers, result)
+}
