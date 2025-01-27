@@ -16,15 +16,15 @@ func ReadSliceLenPrefix[T any](b []byte, readOne func(b []byte) (T, []byte)) ([]
 	return ReadSlice(b2, count, readOne)
 }
 
-func WriteSlice[T any](b []byte, xs []T, writeOne func(x T, b []byte) []byte) []byte {
+func WriteSlice[T any](b []byte, xs []T, writeOne func(b []byte, x T) []byte) []byte {
 	var b2 = b
 	for _, x := range xs {
-		b2 = writeOne(x, b2)
+		b2 = writeOne(b2, x)
 	}
 	return b2
 }
 
-func WriteSliceLenPrefix[T any](b []byte, xs []T, writeOne func(x T, b []byte) []byte) []byte {
+func WriteSliceLenPrefix[T any](b []byte, xs []T, writeOne func(b []byte, x T) []byte) []byte {
 	b2 := WriteInt(b, uint64(len(xs)))
 	b3 := WriteSlice(b2, xs, writeOne)
 	return b3

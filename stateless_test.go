@@ -84,7 +84,7 @@ func readThings(b []byte) (x things, b2 []byte) {
 	return
 }
 
-func writeThings(x things, b []byte) []byte {
+func writeThings(b []byte, x things) []byte {
 	b2 := b
 	b2 = WriteInt(b2, x.x)
 	b2 = WriteInt(b2, x.y)
