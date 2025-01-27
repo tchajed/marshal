@@ -84,7 +84,7 @@ func readThings(b []byte) (x things, b2 []byte) {
 	return
 }
 
-func writeThings(x things, b []byte) []byte {
+func writeThings(b []byte, x things) []byte {
 	b2 := b
 	b2 = WriteInt(b2, x.x)
 	b2 = WriteInt(b2, x.y)
@@ -104,4 +104,14 @@ func TestStatelessWriteSlice(t *testing.T) {
 	xs2, b_extra := ReadSliceLenPrefix(b, readThings)
 	assert.Empty(b_extra)
 	assert.Equal(xs, xs2)
+}
+
+func TestStatelessIntSlice(t *testing.T) {
+	assert := assert.New(t)
+	numbers := []uint64{0, 123, 1 << 58, 1 << 48}
+	data := WriteSlice([]byte{}, numbers, WriteInt)
+	result, b_extra := ReadSlice(data, 4, ReadInt)
+
+	assert.Empty(b_extra)
+	assert.Equal(numbers, result)
 }
