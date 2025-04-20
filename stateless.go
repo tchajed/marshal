@@ -47,6 +47,17 @@ func ReadInt32(b []byte) (uint32, []byte) {
 	return i, b[4:]
 }
 
+func ReadInts(b []byte, num uint64) ([]uint64, []byte) {
+	var b2 = b
+	var xs = make([]uint64, 0, num)
+	for i := uint64(0); i < num; i++ {
+		var x uint64
+		x, b2 = ReadInt(b2)
+		xs = append(xs, x)
+	}
+	return xs, b2
+}
+
 // ReadBytes reads `l` bytes from b and returns (bs, rest)
 func ReadBytes(b []byte, l uint64) ([]byte, []byte) {
 	s := b[:l]
@@ -95,6 +106,14 @@ func WriteInt32(b []byte, i uint32) []byte {
 // Append data to b, returning the new slice.
 func WriteBytes(b []byte, data []byte) []byte {
 	return append(b, data...)
+}
+
+func WriteInts(b []byte, xs []uint64) []byte {
+	var b2 = reserve(b, uint64(len(xs))*8)
+	for _, x := range xs {
+		b2 = WriteInt(b2, x)
+	}
+	return b2
 }
 
 func WriteBool(b []byte, x bool) []byte {

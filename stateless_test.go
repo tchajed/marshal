@@ -36,6 +36,19 @@ func TestStatelessInt32(t *testing.T) {
 	}
 }
 
+func TestStatelessInts(t *testing.T) {
+	assert := assert.New(t)
+	numbers1 := []uint64{0, 123, 1 << 58, 1 << 48}
+	numbers2 := []uint64{7, 15}
+	data := WriteInts(nil, numbers1)
+	data = WriteInts(data, numbers2)
+	numbers1_actual, data := ReadInts(data, uint64(len(numbers1)))
+	numbers2_actual, data := ReadInts(data, uint64(len(numbers2)))
+	assert.Equal(numbers1, numbers1_actual)
+	assert.Equal(numbers2, numbers2_actual)
+	assert.Empty(data)
+}
+
 func TestStatelessWriteBytesInPlace(t *testing.T) {
 	assert := assert.New(t)
 	data := []byte{1, 2, 3, 4}
