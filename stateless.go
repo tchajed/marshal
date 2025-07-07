@@ -82,6 +82,12 @@ func ReadLenPrefixedBytes(b []byte) ([]byte, []byte) {
 	return bs, b3
 }
 
+func ReadLenPrefixedBytesCopy(b []byte) ([]byte, []byte) {
+	l, b2 := ReadInt(b)
+	bs, b3 := ReadBytesCopy(b2, l)
+	return bs, b3
+}
+
 /* Functions for the stateless encoder API */
 
 // WriteInt appends i in little-endian format to b, returning the new slice.
